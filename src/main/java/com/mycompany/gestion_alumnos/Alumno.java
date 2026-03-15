@@ -55,4 +55,12 @@ public class Alumno {
                " | Edad: " + edad +
                " | Carrera: " + carrera;
     }
+    
+    //Creamos la base para actualizar los datos
+    public void actualizar(String nombre, int edad, String carrera) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.carrera = carrera;
+    }
+
 }
