@@ -31,23 +31,76 @@ public class Gestion_Alumnos {
             switch (opcion) {
 
                 case 1 -> {
-                    System.out.print("Matricula: ");
-                    String matricula = sc.nextLine();
+                    int tipo = 0;
+                    do {
+                        System.out.print("Escoge tipo de alumno: 1 Presencial | 2 En Linea: ");
 
-                    System.out.print("Nombre: ");
-                    String nombre = sc.nextLine();
+                        if (sc.hasNextInt()) {
+                            tipo = sc.nextInt();
 
-                    System.out.print("Edad: ");
-                    int edad = leerEntero(sc);
+                            if (tipo < 1 || tipo > 2) {
+                                System.out.println("Opcion invalida. Solo se permite 1 o 2.");
+                            }
 
-                    System.out.print("Carrera: ");
-                    String carrera = sc.nextLine();
+                        } else {
+                            System.out.println("Entrada invalida. Debes ingresar un numero.");
+                            sc.next(); // limpia el valor incorrecto
+                        }
 
-                    // Instanciación (new) + constructor
-                    Alumno a = new Alumno(matricula, nombre, edad, carrera);
+                    } while (tipo < 1 || tipo > 2);
+                    sc.nextLine(); 
+                    if (tipo == 1){
+                        System.out.print("Matricula: ");
+                        String matricula = sc.nextLine();
 
-                    boolean ok = gestor.agregar(a);
-                    System.out.println(ok ? "Alumno registrado." : "Ya existe esa matricula.");
+                        System.out.print("Nombre: ");
+                        String nombre = sc.nextLine();
+
+                        System.out.print("Edad: ");
+                        int edad = leerEntero(sc);
+
+                        System.out.print("Carrera: ");
+                        String carrera = sc.nextLine();
+                        
+                        System.out.print("Aula: ");
+                        String aula = sc.nextLine();
+                        
+                        System.out.print("Edificio: ");
+                        String edificio = sc.nextLine();
+                        
+                        Alumno a = new AlumnoPresencial(matricula, nombre, edad, carrera, aula, edificio);
+                        boolean ok = gestor.agregar(a);
+                        System.out.println(ok ? "Alumno registrado." : "Ya existe esa matricula.");
+                    }
+                    else
+                    {
+                        System.out.print("Matricula: ");
+                        String matricula = sc.nextLine();
+
+                        System.out.print("Nombre: ");
+                        String nombre = sc.nextLine();
+
+                        System.out.print("Edad: ");
+                        int edad = leerEntero(sc);
+
+                        System.out.print("Carrera: ");
+                        String carrera = sc.nextLine();
+                        
+                        int plataforma;
+
+                        do {
+                            System.out.print("Que plataforma usara el alumno: 1. Google Meet | 2. Teams | 3. Zoom: ");
+                            plataforma = sc.nextInt();
+                        } while (plataforma < 1 || plataforma > 3);
+
+                        sc.nextLine();
+
+                        // Instanciación (new) + constructor
+                        Alumno a = new AlumnoEnLinea(matricula, nombre, edad, carrera, plataforma);
+                        boolean ok = gestor.agregar(a);
+                        System.out.println(ok ? "Alumno registrado." : "Ya existe esa matricula.");
+                    }
+                    
                 }
 
                 case 2 -> gestor.listar();
@@ -63,18 +116,9 @@ public class Gestion_Alumnos {
                 }
 
                 case 4 -> {
+
                     System.out.print("Matricula a actualizar: ");
                     String m = sc.nextLine();
-                    Alumno alumno = gestor.buscarPorMatricula(m);
-                    
-                    if (m.isEmpty()) {
-                        System.out.println("Matricula invalida: no puede estar vacia.");
-                        break;
-                    }
-                    if (alumno == null) {
-                        System.out.println("Matricula invalida: no existe ese alumno.");
-                        break; // sale del case sin pedir más datos
-                    }
 
                     System.out.print("Nuevo nombre: ");
                     String nuevoNombre = sc.nextLine();
@@ -85,9 +129,51 @@ public class Gestion_Alumnos {
                     System.out.print("Nueva carrera: ");
                     String nuevaCarrera = sc.nextLine();
 
-                    boolean ok = gestor.actualizar(m, nuevoNombre, nuevaEdad, nuevaCarrera);
+                    int tipo;
+
+                    do {
+                        System.out.print("Escoge tipo de alumno: 1 Presencial | 2 En Linea: ");
+                        tipo = sc.nextInt();
+                    } while (tipo < 1 || tipo > 2);
+
+                    sc.nextLine();
+
+                    String nuevaAula = null;
+                    String nuevoEdificio = null;
+                    int nuevaPlataforma = 0;
+
+                    if (tipo == 1) {
+
+                        System.out.print("Nueva aula: ");
+                        nuevaAula = sc.nextLine();
+
+                        System.out.print("Nuevo edificio: ");
+                        nuevoEdificio = sc.nextLine();
+
+                    } else {
+
+                        do {
+                            System.out.print("Que plataforma usara el alumno: 1 Google Meet | 2 Teams | 3 Zoom: ");
+                            nuevaPlataforma = sc.nextInt();
+                        } while (nuevaPlataforma < 1 || nuevaPlataforma > 3);
+
+                        sc.nextLine();
+                    }
+
+                    boolean ok = gestor.actualizar(
+                            m,
+                            nuevoNombre,
+                            nuevaEdad,
+                            nuevaCarrera,
+                            nuevaAula,
+                            nuevoEdificio,
+                            nuevaPlataforma,
+                            tipo
+                    );
+
                     System.out.println(ok ? "Actualizado correctamente." : "No existe esa matricula.");
                 }
+
 
                 case 5 -> {
                     System.out.print("Matricula a eliminar: ");
