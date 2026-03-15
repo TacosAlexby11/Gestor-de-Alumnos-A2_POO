@@ -26,7 +26,6 @@ public class AlumnoPresencial extends Alumno{
     }
     
     public String info(){
-        
             return super.info() + "| Aula: " + aula +
                    "| Edificio: " + edificio;
     }
