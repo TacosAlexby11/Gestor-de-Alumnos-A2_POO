@@ -45,6 +45,7 @@ public class Gestion_Alumnos {
                         } else {
                             System.out.println("Entrada invalida. Debes ingresar un numero.");
                             sc.next(); // limpia el valor incorrecto
+                            tipo = 0;
                         }
 
                     } while (tipo < 1 || tipo > 2);
@@ -86,11 +87,23 @@ public class Gestion_Alumnos {
                         System.out.print("Carrera: ");
                         String carrera = sc.nextLine();
                         
-                        int plataforma;
+                        int plataforma = 0;
 
                         do {
-                            System.out.print("Que plataforma usara el alumno: 1. Google Meet | 2. Teams | 3. Zoom: ");
-                            plataforma = sc.nextInt();
+                        System.out.print("Que plataforma usara el alumno: 1. Google Meet | 2. Teams | 3. Zoom: ");
+
+                            if (sc.hasNextInt()) {
+                                plataforma = sc.nextInt();
+
+                                if (plataforma < 1 || plataforma > 3) {
+                                    System.out.println("Opcion invalida. Solo se permite 1, 2 o 3.");
+                                }
+
+                            } else {
+                                System.out.println("Entrada invalida. Debes ingresar un numero.");
+                                sc.next(); // limpia la entrada incorrecta
+                            }
+
                         } while (plataforma < 1 || plataforma > 3);
 
                         sc.nextLine();
