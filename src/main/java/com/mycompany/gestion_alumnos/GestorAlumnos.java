@@ -1,9 +1,10 @@
 package com.mycompany.gestion_alumnos;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GestorAlumnos {
-
+    Scanner sc = new Scanner(System.in);
     private ArrayList<Alumno> alumnos;
 
     // Constructor
@@ -38,14 +39,31 @@ public class GestorAlumnos {
         return null;
     }
 
-    public boolean actualizar(String matricula, String nuevoNombre, int nuevaEdad, String nuevaCarrera) {
-        Alumno a = buscarPorMatricula(matricula);
-        if (a == null) return false;
+    public boolean actualizar(String matricula, String nombre, int edad, String carrera,
+                              String aula, String edificio, int plataforma, int tipo) {
 
-        a.setNombre(nuevoNombre);
-        a.setEdad(nuevaEdad);
-        a.setCarrera(nuevaCarrera);
-        return true;
+        for (int i = 0; i < alumnos.size(); i++) {
+
+            Alumno a = alumnos.get(i);
+
+            if (a.getMatricula().equals(matricula)) {
+
+                Alumno nuevo;
+
+                if (tipo == 1) {
+                    // alumno presencial
+                    nuevo = new AlumnoPresencial(matricula, nombre, edad, carrera, aula, edificio);
+                } else {
+                    // alumno en linea
+                    nuevo = new AlumnoEnLinea(matricula, nombre, edad, carrera, plataforma);
+                }
+
+                alumnos.set(i, nuevo);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean eliminar(String matricula) {
